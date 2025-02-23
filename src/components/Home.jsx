@@ -1,31 +1,75 @@
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
 
 function Home() {
   const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
 
+  useEffect(() => {
+    // Inject Botpress Webchat script
+    const botpressScript1 = document.createElement("script");
+    botpressScript1.src = "https://cdn.botpress.cloud/webchat/v2.2/inject.js";
+    botpressScript1.async = true;
+    document.body.appendChild(botpressScript1);
+
+    const botpressScript2 = document.createElement("script");
+    botpressScript2.src = "https://files.bpcontent.cloud/2025/02/23/01/20250223014748-85G08W59.js";
+    botpressScript2.async = true;
+    document.body.appendChild(botpressScript2);
+
+    return () => {
+      // Cleanup scripts on unmount
+      document.body.removeChild(botpressScript1);
+      document.body.removeChild(botpressScript2);
+    };
+  }, []);
+
   return (
     <div className="font-sans">
       {/* Navbar */}
       <nav className="bg-white shadow-md p-4">
-        <div className="flex justify-between items-center max-w-6xl mx-auto">
-          <a href="#" className="text-xl font-bold">SkinCheck</a>
+        <div className="flex justify-between items-center mx-auto">
           <button
-            className="text-xl md:hidden"
             onClick={() => setMenuOpen(!menuOpen)}
+            className="md:hidden p-2 text-gray-700 focus:outline-none"
           >
             ☰
           </button>
           <ul
-            className={`md:flex space-x-6 absolute md:static bg-white w-full md:w-auto md:flex-row transition-transform duration-200 ease-in-out ${menuOpen ? "block" : "hidden"}`}
+            className={`md:flex space-x-6 absolute md:static bg-white w-full md:w-auto md:flex-row transition-transform duration-200 ease-in-out ${
+              menuOpen ? "block" : "hidden"
+            }`}
           >
-            <li><a href="home" className="block p-2">Home</a></li>
-            <li><a href="doctor-search" className="block p-2">Search Doctors</a></li>
-            <li><a href="#services" className="block p-2">Services</a></li>
-            <li><a href="#contact" className="block p-2">Contact</a></li>
-            <li><a href="/signup" className="block p-2">Sign Up</a></li>
-            <li><a href="/templates/sign-up.html" className="block p-2">Sign In</a></li>
+            <li>
+              <a onClick={() => navigate("/")} className="block p-2 cursor-pointer">
+                Home
+              </a>
+            </li>
+            <li>
+              <a onClick={() => navigate("/doctor-search")} className="block p-2 cursor-pointer">
+                Search Doctors
+              </a>
+            </li>
+            <li>
+              <a href="#services" className="block p-2">
+                Services
+              </a>
+            </li>
+            <li>
+              <a href="#contact" className="block p-2">
+                Contact
+              </a>
+            </li>
+            <li>
+              <a onClick={() => navigate("/signup")} className="block p-2 cursor-pointer">
+                Sign Up
+              </a>
+            </li>
+            <li>
+              <a onClick={() => navigate("/signin")} className="block p-2 cursor-pointer">
+                Sign In
+              </a>
+            </li>
           </ul>
         </div>
       </nav>

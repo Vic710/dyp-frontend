@@ -9,13 +9,6 @@ export default function Navbar() {
         <img src={icon} alt="Logo" className="w-10 h-10 mr-3" /> 
         <Link to="/" className="text-white text-xl font-bold">SkinCheck</Link>
       </div>
-
-      {/* Right Side - Navigation Links */}
-      <div className="space-x-4">
-        <Link to="/doctors" className="text-white hover:underline">Find Doctors</Link>
-        <Link to="/about" className="text-white hover:underline">About</Link>
-        <Link to="/contact" className="text-white hover:underline">Contact</Link>
-      </div>
     </nav>
   );
 }

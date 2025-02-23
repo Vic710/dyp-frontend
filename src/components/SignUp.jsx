@@ -8,7 +8,7 @@ const SignUp = () => {
   return (
     <div className="flex flex-col md:flex-row h-screen items-center justify-center bg-gray-100">
       <div className="p-6 bg-white rounded-md shadow-md w-full md:w-1/3">
-        <h2 className="text-3xl font-bold text-center mb-2">SkinCheck</h2>
+        {/* <h2 className="text-3xl font-bold text-center mb-2">SkinCheck</h2> */}
         <h1 className="text-2xl font-semibold text-center mb-6">SIGN UP</h1>
         <form>
           <label className="block text-gray-700">Email</label>
