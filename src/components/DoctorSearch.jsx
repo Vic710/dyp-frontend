@@ -43,7 +43,7 @@ export default function DoctorSearch() {
       <h1 className="text-xl font-bold text-gray-900">Search Nearby Doctors</h1>
       <input
         type="text"
-        placeholder="Enter city name..."
+        placeholder="Enter preferred area address..."
         value={city}
         onChange={(e) => setCity(e.target.value)}
         className="w-full p-2 border rounded"
