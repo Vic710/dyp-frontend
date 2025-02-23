@@ -6,6 +6,9 @@ export default function DoctorSearch() {
   const [doctors, setDoctors] = useState([]);
   const [loading, setLoading] = useState(false);
   const [callingDoctor, setCallingDoctor] = useState(null);
+  const [showDialog, setShowDialog] = useState(false);
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [doctorPhoneToCall, setDoctorPhoneToCall] = useState(null);
 
   const searchDoctors = async () => {
     if (!city) return;
@@ -19,6 +22,26 @@ export default function DoctorSearch() {
       console.error("Error fetching doctors:", error);
     }
     setLoading(false);
+  };
+
+  const openFileDialog = (doctorPhone) => {
+    setShowDialog(true);
+    setDoctorPhoneToCall(doctorPhone);
+  };
+
+  const closeFileDialog = () => {
+    setShowDialog(false);
+    setSelectedImage(null);
+    setDoctorPhoneToCall(null);
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file && (file.type === "image/jpeg" || file.type === "image/png")) {
+      setSelectedImage(URL.createObjectURL(file));
+    } else {
+      alert("Please select a valid image file (JPEG or PNG).");
+    }
   };
 
   const bookAppointment = async (doctorPhone) => {
@@ -36,6 +59,13 @@ export default function DoctorSearch() {
       alert("Failed to initiate call. Please try again.");
     }
     setCallingDoctor(null);
+  };
+
+  const handleUploadAndCall = async () => {
+    closeFileDialog();
+    if (doctorPhoneToCall) {
+      bookAppointment(doctorPhoneToCall);
+    }
   };
 
   return (
@@ -65,7 +95,7 @@ export default function DoctorSearch() {
                 <p className="text-sm text-gray-600">{doctor.address}</p>
               </div>
               <button
-                onClick={() => bookAppointment('919545572005')}
+                onClick={() => openFileDialog("919545572005")}
                 className="bg-green-500 text-white px-3 py-1 rounded hover:bg-green-600 disabled:bg-gray-400"
                 disabled={callingDoctor === doctor.phone}
               >
@@ -74,6 +104,45 @@ export default function DoctorSearch() {
             </li>
           ))}
         </ul>
+      )}
+
+      {/* File Upload Popup (Optional) */}
+      {showDialog && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-sm w-full">
+            <h2 className="text-lg font-bold mb-4">Upload Medical Record (Optional)</h2>
+            <input
+              type="file"
+              accept="image/jpeg, image/png"
+              onChange={handleFileChange}
+              className="w-full p-2 border rounded"
+            />
+            {selectedImage && (
+              <div className="mt-4">
+                <p className="text-sm text-gray-600">Preview:</p>
+                <img src={selectedImage} alt="Preview" className="mt-2 w-full rounded" />
+              </div>
+            )}
+
+            <div className="mt-4 flex justify-end space-x-2">
+              <button
+                onClick={() => {
+                  closeFileDialog();
+                  bookAppointment(doctorPhoneToCall);
+                }}
+                className="bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400"
+              >
+                Skip Upload
+              </button>
+              <button
+                onClick={handleUploadAndCall}
+                className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
+              >
+                Upload & Call
+              </button>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );
